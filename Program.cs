@@ -199,10 +199,45 @@ namespace SistemaQuadras
  
         static void ListarAlugueis()
         {
+            Console.WriteLine("--- Lista de alugueis ativos ---");
+ 
+            if (alugueis.Count == 0)
+            {
+                Console.WriteLine("Nenhum aluguel ativo no momento.");
+                return;
+            }
+ 
+            for (int i = 0; i < alugueis.Count; i++)
+            {
+                Aluguel a = alugueis[i];
+                Console.WriteLine((i + 1) + " - Quadra: " + a.Quadra.Nome +
+                    " | Cliente: " + a.Cliente.Nome +
+                    " | Telefone: " + a.Cliente.Telefone +
+                    " | Horas: " + a.Horas +
+                    " | Valor total: R$ " + a.ValorTotal);
+            }
         }
  
         static void EncerrarAluguel()
         {
+            ListarAlugueis();
+ 
+            if (alugueis.Count == 0)
+                return;
+ 
+            Console.Write("Digite o numero do aluguel que deseja encerrar: ");
+            int numero;
+            if (!int.TryParse(Console.ReadLine(), out numero) || numero < 1 || numero > alugueis.Count)
+            {
+                Console.WriteLine("Numero invalido.");
+                return;
+            }
+ 
+            Aluguel aluguel = alugueis[numero - 1];
+            aluguel.Quadra.Disponivel = true;
+            alugueis.Remove(aluguel);
+ 
+            Console.WriteLine("Aluguel encerrado. A quadra " + aluguel.Quadra.Nome + " esta disponivel novamente.");
         }
     }
 }
